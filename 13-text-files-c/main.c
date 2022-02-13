@@ -43,7 +43,7 @@ char* strlower(char* str, size_t len);
 int main(void)
 {
     pflush("Enter the name of the file:");
-    char _filepath[32] = "../data";
+    char _filepath[32] = "../data/13/";
     scanf("%s", &filename);
     _flush_scanf();
 
@@ -55,7 +55,7 @@ int main(void)
     read_file(readbuffer, _filepath);
 
     pflush("Enter the name of the second file:");
-    char _wfilepath[32] = "../data";
+    char _wfilepath[32] = "../data/13/";
     scanf("%s", &words_filename);
     _flush_scanf();
 
@@ -69,7 +69,7 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
     readbuffer = fopen(filename, "r");
     
     char _rline[128];
-    char delim[] = " ,.;!?";
+    char delim[] = " ,.;:\"!?";
 
     char* restrict _wpointer;
     char target_word[128];
@@ -81,7 +81,8 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
             break;
         // split word
         _wpointer = strtok(_rline, delim); // get first word
-        wlen = strlen(_wpointer);
+        size_t _actsize_tmp = strlen(_wpointer);
+        wlen = _wpointer[_actsize_tmp - 1] == '\n' ? _actsize_tmp - 1 : _actsize_tmp; // check if this is the only word in line and \n is next
         strcpy(target_word, _wpointer);
 
         // get all words and check them
@@ -95,11 +96,11 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
             {
                 wlen = curr_wlen;
                 strcpy(target_word, _wpointer);
-                if (target_word[wlen - 1] == '\n') // <- lets remove odd \n and replace it by null-termination so that we could easily concat out strings
-                    target_word[wlen - 1] = '\0';
             }
             _wpointer = strtok(NULL, delim);
         }
+        if (target_word[wlen - 1] == '\n') // <- lets remove odd \n and replace it by null-termination so that we could easily concat out strings
+            target_word[wlen - 1] = '\0';
         char len[4]; // will convert wlen to char* with sprintf
         sprintf(len, " %d\n", wlen);
         strcat(target_word, len);
