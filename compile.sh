@@ -12,7 +12,6 @@ esac
 echo Detected ${machine} compiler
 if [[ ${machine} == MinGW ]]; then
     echo This is not meant for MinGW lmao
-    return 1
 fi
 
 echo on
@@ -22,4 +21,3 @@ cd ./build
 make
 
 ./$1/$1 # will execute executable from CLI argument list
-return 0
