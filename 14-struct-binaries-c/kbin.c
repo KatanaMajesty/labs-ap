@@ -1,36 +1,6 @@
 #include <stdio.h>
 #include <kbin.h>
 
-#define TRUE    1
-#define FALSE   0
-
-enum PlaneType
-{
-    UNKNOWN     = 0,
-    PASSANGER   = 1,
-    CARGO       = 2,
-    MILITARY    = 3
-};
-
-struct _flight_dir
-{
-    unsigned int    flight_days;
-    unsigned long   flight_id;
-};
-
-struct _plane
-{
-    enum PlaneType  plane_type;
-    unsigned int    capacity;
-    float           ticket_cost;
-};
-
-struct flight_data
-{
-    struct _plane       plane;
-    struct _flight_dir  dir;
-};
-
 void remove_data(FILE* restrict readbuffer, const char* filename, unsigned int i)
 {
     char* tmp_filename = malloc(strlen(filename) + 4);
@@ -83,7 +53,7 @@ void write_data(FILE* writebuffer, const char* filename, struct flight_data* dat
     fclose(writebuffer);
 }
 
-void insert_data(FILE* restrict writebuffer, const char* filename, struct flight_data* data, unsigned int i)
+void replace_data(FILE* restrict writebuffer, const char* filename, struct flight_data* data, unsigned int i)
 {
     writebuffer = fopen(filename, "rb+");
     fseek(writebuffer, sizeof(struct flight_data) * i, SEEK_SET);
@@ -91,13 +61,13 @@ void insert_data(FILE* restrict writebuffer, const char* filename, struct flight
     fclose(writebuffer);
 }
 
-struct flight_data* read_data(FILE* restrict readbuffer, const char* filename, unsigned int i, struct flight_data* _dest)
+unsigned int read_data(FILE* restrict readbuffer, const char* filename, unsigned int i, struct flight_data* _dest)
 {
     readbuffer = fopen(filename, "rb");
     fseek(readbuffer, sizeof(struct flight_data) * i, SEEK_SET);
-    fread(_dest, sizeof(struct flight_data), 1, readbuffer);
+    unsigned int result = fread(_dest, sizeof(struct flight_data), 1, readbuffer);
     fclose(readbuffer);
-    return _dest;
+    return result;
 }
 
 void print_flight_data(FILE* restrict readbuffer, const char* filename)
