@@ -28,7 +28,7 @@ void remove_data(FILE* restrict readbuffer, const char* filename, unsigned int i
     {
         if (i == j)
         {
-            printf("Successfully deleted record at index %d\n", i);
+            printf("[LOG] Successfully deleted record at index %d\n", i);
             found = TRUE;
         }
         else fwrite(&output, sizeof(struct flight_data), 1, tmpbuffer);

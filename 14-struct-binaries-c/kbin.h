@@ -56,6 +56,7 @@ struct flight_data* gen_data    (unsigned int i);
 void write_data                 (FILE* writebuffer, const char* filename,   struct flight_data* data, size_t len);
 // write data with writebuffer to filename with a pointer at the element you want to see at index i in binary file
 void replace_data               (FILE* writebuffer, const char* filename,   struct flight_data* data, unsigned int i);
+// removes record from binary file at target index
 void remove_data                (FILE* readbuffer,  const char* filename,   unsigned int i);                                //__attribute_malloc__
 // get data with readbuffer from filename at index i to _dest
 // index go from 0 to N (zero-based)
