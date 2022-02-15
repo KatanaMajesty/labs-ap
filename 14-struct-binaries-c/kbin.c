@@ -83,10 +83,11 @@ void print_flight_data(FILE* restrict readbuffer, const char* filename)
             else printf("[LOG] Error while reading binary\n");
             break;
         }
-        printf("[LOG] Plane Type: %d; Capacity: %d; Cost: %f\n", 
+        printf("[LOG] Plane Type: %d; Capacity: %d; Cost: %f; Flight ID: %lu\n", 
                 output.plane.plane_type, 
                 output.plane.capacity, 
-                output.plane.ticket_cost
+                output.plane.ticket_cost,
+                output.dir.flight_id
         );
     }
     fclose(readbuffer);
