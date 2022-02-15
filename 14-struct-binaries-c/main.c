@@ -84,7 +84,7 @@ unsigned long get_min_ticket_price(enum DaysEnum days[], size_t days_len, const 
             min_cost = output.plane.ticket_cost;
             _flight_id = output.dir.flight_id;
         }
-        printf("[LOG] iteration :%d; min_cost: %f; flight_id: %lu\n", i, min_cost, _flight_id);
+        printf("[LOG] Iteration: %d; Minimal Cost: %f; Flight ID: %lu\n", i, min_cost, _flight_id);
     }
 
     return _flight_id;
@@ -175,14 +175,14 @@ int main(void)
     print_flight_data(_readbuffer, filepath);
 
     // PART 1
-    printf("[LOG] Flight ID with minimal cost: %lu\n", 
+    printf("-- Flight ID with minimal cost: %lu\n", 
             get_min_ticket_price(
                 (enum DaysEnum[]){MONDAY, TUESDAY}, 
                 2, filepath)
             );
 
     // PART 2
-    printf("[LOG] Overall capacity for target direction is %u\n", 
+    printf("-- Overall capacity for target direction is %u\n", 
             get_capacity(
                 (enum DaysEnum[]){MONDAY, TUESDAY}, 
                 2, filepath)
