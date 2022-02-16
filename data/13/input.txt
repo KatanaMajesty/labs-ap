@@ -1,3 +1,4 @@
-hello, world! how are you?
-hi, alex! i'm fine, what about you?
-great!
+hello, world!
+this is an input file
+last word in this line is the longest
+last line of file
