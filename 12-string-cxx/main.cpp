@@ -35,6 +35,12 @@ std::string encode(const char* base, size_t base_size, const char* input, size_t
     int input_cursor = 0;
     int base_cursor = 0;
     
+    if (base_words.size() / 2 != input_words.size()) // check if there are enough words in BASE, so there are no std::out_of_range error
+    {
+        std::cout << "Not enough words in base!" << std::endl;
+        return "undefined"; // <- std::string(nullptr) will lead to UB
+    }
+
     for (size_t i = 0; i < word_count; i++)
     {
         std::string target = i % 3 == 2 ? // hardcode pog
