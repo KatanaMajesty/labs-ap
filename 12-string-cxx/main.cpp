@@ -12,7 +12,7 @@ std::vector<std::string> split_delim(std::string str, char delim)
     while (word != NULL)
     {
         m_words.push_back(word);
-        word = strtok(NULL, &delim); 
+        word = strtok(NULL, &delim); // <- will point at next char after delim
     }
     
     return m_words;
@@ -84,12 +84,12 @@ int main(void)
     
     std::cout << "Enter base\n";
     std::cin >> base;
+    std::cout << "[LOG] Saved Base: " << base << std::endl;
 
     std::cout << "Enter input\n";
     std::cin >> input;
+    std::cout << "[LOG] Saved Input: " << input << std::endl;
 
-    std::cout << "[LOG] Base: " << base << std::endl;
-    std::cout << "[LOG] Input: " << input << std::endl;
 
     int act_size = input.size() + base.size() + 1; // <- needed to decode a string
     std::string encoded = encode(base.c_str(), base.size(), input.c_str(), input.size(), delim);

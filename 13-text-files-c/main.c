@@ -103,9 +103,7 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
             }
             _wpointer = strtok(NULL, delim);
         }
-        // unnnecessary now
-        // if (target_word[wlen - 1] == '\n') // <- lets remove odd \n and replace it by null-termination so that we could easily concat this strings
-        //     target_word[wlen - 1] = '\0';
+
         char len[4]; // will convert wlen to char* with sprintf
         sprintf(len, " %d\n", wlen);
         strcat(target_word, len);

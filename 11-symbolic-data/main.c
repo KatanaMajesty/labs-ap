@@ -2,8 +2,8 @@
 #include <string.h>
 #include <malloc.h>
 
-#define FALSE (unsigned int) 0
-#define TRUE (unsigned int) 1
+#define FALSE 0
+#define TRUE 1
 
 void _flushout(void)
 {
@@ -39,44 +39,18 @@ unsigned int _get_letters(char* buffer, size_t len)
     return c;
 }
 
+/*
+input:
+19
+hi world huh ahahah
+*/
+
 // deletes words with <= 2 letters
-char* _delete_odd(const char* buffer, char delim)
+__attribute_malloc__ char* _delete_odd(const char* buffer, char delim) 
 {
     size_t _act_buffer_len = strlen(buffer);
-    char* _newbuff = malloc(_act_buffer_len + 1); // <- new buffer without words with less than 2 unique words
+    char* _newbuff = calloc(_act_buffer_len + 1, sizeof(char)); // <- new buffer without words with less than 2 unique letters
     
-    /*
-    input:
-    18
-    hi world huh ahahah
-
-    runtime:
-    index < beg_point < curr_wlen
-    0 < 0 < 1 h
-    1 < 0 < 2 i
-    2 < 3 < 0 -> delim == ' ' at 2 -> hi
-
-    3 < 3 < 1 w
-    4 < 3 < 2 o
-    5 < 3 < 3 r
-    6 < 3 < 4 l
-    7 < 3 < 5 d
-    8 < 9 < 0 -> delim == ' ' at 8 -> world
-
-    9 < 9 < 1 h
-    10 < 9 < 2 u
-    11 < 9 < 3 h
-    12 < 13 < 0 -> delim == ' ' at 12 -> huh
-
-    13 < 13 < 1 a
-    14 < 13 < 2 h
-    15 < 13 < 3 a
-    16 < 13 < 4 h
-    17 < 13 < 5 a
-    18 < 13 < 6 h
-    EOF
-    */
-
     int beg_point = 0;
     int curr_wlen = 0;
     for (size_t i = 0; i < _act_buffer_len; i++)
@@ -98,7 +72,7 @@ char* _delete_odd(const char* buffer, char delim)
             }
 
             beg_point = i + 1; // <- will point on the first letter of the word
-            curr_wlen = 0; // <- if the next symbol after space is another space, than word length should be 0
+            curr_wlen = 0;
 
             free(_cpy);
         } 
@@ -120,6 +94,9 @@ int main(void)
     buffer[size] = '\0';
     strcat(buffer, " ");
 
+    char* result = _delete_odd(buffer, ' ');
     printf("Final result:\n");
-    puts(_delete_odd(buffer, ' '));
+    puts(result);
+    fflush(stdin);
+    free(result);
 }
