@@ -18,10 +18,11 @@ void pflush(const char *str)
 }
 
 // flush after scanf
+// in order for puts to work correctly
 void _flush_scanf()
 {
     int f = 0;
-    while ((f = getchar()) != '\n' && f != EOF);
+    while ((f = getchar()) != '\n' && f != EOF); // <- after use of scanf() there is linefeed left in stdin buffer, so we gotta clear it
 }
 
 FILE* restrict readbuffer;
@@ -42,19 +43,19 @@ char* strlower(char* str, size_t len);
 
 int main(void)
 {
-    pflush("Enter the name of the file:");
-    char _filepath[32] = "../data/13/";
+    pflush("[LOG] Enter the name of the file:");
+    char _filepath[32] = "../data/13/"; // where data of 13-text-files-c will be saved
     scanf("%s", &filename);
     _flush_scanf();
 
     strcat(_filepath, filename);
-    pflush("Creating blank file... Listening for input:");
+    pflush("[LOG] Creating blank file... Listening for input:");
     write_file(writebuffer, _filepath);
 
-    pflush("Reading a file... Result:");
+    pflush("[LOG] Reading a file... Result:");
     read_file(readbuffer, _filepath);
 
-    pflush("Enter the name of the second file:");
+    pflush("[LOG] Enter the name of the second file:");
     char _wfilepath[32] = "../data/13/";
     scanf("%s", &words_filename);
     _flush_scanf();
@@ -76,7 +77,7 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
     size_t wlen;
     while(TRUE)
     {
-        fgets(_rline, sizeof(_rline), readbuffer);
+        fgets(_rline, sizeof(_rline), readbuffer); // get next line
         if (feof(readbuffer))
             break;
         // split word
@@ -89,8 +90,11 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
         while (_wpointer != NULL)
         {
             size_t curr_wlen = strlen(_wpointer);
-            if (_wpointer[curr_wlen - 1] == '\n') // <- \n will be recorded by fgets, so we are forced to check it
+            if (_wpointer[curr_wlen - 1] == '\n') // <- \n will be recorded by fgets, so we are forced to check and change it
+            {
+                _wpointer[curr_wlen - 1] = '\0';
                 curr_wlen -= 1;
+            }
 
             if (wlen <= curr_wlen)
             {
@@ -99,8 +103,9 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
             }
             _wpointer = strtok(NULL, delim);
         }
-        if (target_word[wlen - 1] == '\n') // <- lets remove odd \n and replace it by null-termination so that we could easily concat out strings
-            target_word[wlen - 1] = '\0';
+        // unnnecessary now
+        // if (target_word[wlen - 1] == '\n') // <- lets remove odd \n and replace it by null-termination so that we could easily concat this strings
+        //     target_word[wlen - 1] = '\0';
         char len[4]; // will convert wlen to char* with sprintf
         sprintf(len, " %d\n", wlen);
         strcat(target_word, len);
@@ -133,7 +138,7 @@ void write_file(FILE* restrict writebuffer, const char* filename)
             break;
         fputs(line, writebuffer);
     } 
-    fputs("\0", writebuffer);
+    // fputs("\0", writebuffer); // why? odd
     fclose(writebuffer);
 }
 
