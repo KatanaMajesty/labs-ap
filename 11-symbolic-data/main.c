@@ -83,7 +83,7 @@ char* _delete_odd(const char* buffer, char delim)
     {
         // debugging purposes
         // printf("char %c with id %d\n", buffer[i], buffer[i]);
-        if (buffer[i] == delim || buffer[i] == 10) // <- check if buffer eq to delim or linefeed, which is a result of user input
+        if (buffer[i] == delim || buffer[i] == '\n') // <- check if buffer eq to delim or linefeed, which is a result of user input
         {
             char* _cpy = malloc(curr_wlen + 1);
             memcpy(_cpy, &buffer[beg_point], curr_wlen); // <- will copy a string starting from the beginning of the word til its end
@@ -110,15 +110,16 @@ char* _delete_odd(const char* buffer, char delim)
 int main(void)
 {
     size_t size;
-    printf("Enter size of array\n");
+    printf("Enter the size of array:\n");
     scanf("%d", &size);
     _flushout();
 
     char buffer[size + 1]; // <- extra symbol for \0 that is not added automatically
-    printf("Enter words\n");
+    printf("Enter words:\n");
     fgets(buffer, sizeof(buffer), stdin);
+    buffer[size] = '\0';
     strcat(buffer, " ");
 
-    printf("Final result\n");
+    printf("Final result:\n");
     puts(_delete_odd(buffer, ' '));
 }
