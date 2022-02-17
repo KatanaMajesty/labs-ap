@@ -1,4 +1,4 @@
 hello, world!
 this is an input file
 last word in this line is the longest
-last line of file
+end of file.
