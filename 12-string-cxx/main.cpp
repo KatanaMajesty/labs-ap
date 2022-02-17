@@ -18,7 +18,7 @@ std::vector<std::string> split_delim(std::string str, char delim)
     return m_words;
 }
 
-std::string encode(const char* base, size_t base_size, const char* input, size_t input_size, char delim)
+std::string encode(const char* base, const char* input, char delim)
 {
     std::vector<std::string> base_words = split_delim(base, delim);
     std::vector<std::string> input_words = split_delim(input, delim);
@@ -36,10 +36,7 @@ std::string encode(const char* base, size_t base_size, const char* input, size_t
     int base_cursor = 0;
     
     if (base_words.size() / 2 != input_words.size()) // check if there are enough words in BASE, so there are no std::out_of_range error
-    {
-        std::cout << "Not enough words in base!" << std::endl;
-        return "undefined"; // <- std::string(nullptr) will lead to UB
-    }
+        throw std::range_error("Not enough words in base or input!");
 
     for (size_t i = 0; i < word_count; i++)
     {
@@ -51,7 +48,7 @@ std::string encode(const char* base, size_t base_size, const char* input, size_t
         if (i != word_count - 1)
             result_string.append(&delim);
     }
-    // result_string[act_size] = '\0'; // <- null-term char automatically appended by std::string
+    // result_string[act_size] = '\0'; // <- null-char automatically appended by std::string
     return result_string;
 }
 
@@ -92,7 +89,7 @@ int main(void)
 
 
     int act_size = input.size() + base.size() + 1; // <- needed to decode a string
-    std::string encoded = encode(base.c_str(), base.size(), input.c_str(), input.size(), delim);
+    std::string encoded = encode(base.c_str(), input.c_str(), delim);
     std::cout << "[LOG] Encoded result: " << encoded << std::endl;
     std::cout << "[LOG] Decoded result: " << decode(encoded, delim) << std::endl;
 }

@@ -70,7 +70,7 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
     readbuffer = fopen(filename, "r");
     
     char _rline[128];
-    char delim[] = " ,.;:\"!?";
+    char delim[] = " ,.;:\"\n!?"; // <- \n will be recorded by fgets, so we are forced to check and change it
 
     char* restrict _wpointer;
     char target_word[128];
@@ -80,6 +80,7 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
         fgets(_rline, sizeof(_rline), readbuffer); // get next line
         if (feof(readbuffer))
             break;
+            
         // split word
         _wpointer = strtok(_rline, delim); // get first word
         size_t _actsize_tmp = strlen(_wpointer);
@@ -90,11 +91,6 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
         while (_wpointer != NULL)
         {
             size_t curr_wlen = strlen(_wpointer);
-            if (_wpointer[curr_wlen - 1] == '\n') // <- \n will be recorded by fgets, so we are forced to check and change it
-            {
-                _wpointer[curr_wlen - 1] = '\0';
-                curr_wlen -= 1;
-            }
 
             if (wlen <= curr_wlen)
             {
@@ -115,11 +111,6 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
 
 void write_file(FILE* restrict writebuffer, const char* filename)
 {
-    if (strcmp(filename, "") == TRUE)
-    {
-        pflush("not a valid filename. Returning");
-        return;
-    }
     writebuffer = fopen(filename, "w"); // create new file for write and read
     char answ;
     char line[128];
@@ -144,7 +135,10 @@ void read_file(FILE* restrict readbuffer, const char* filename)
 {
     readbuffer = fopen(filename, "r");
     if (readbuffer == NULL)
+    {
+        pflush("failed to open a file. Returning");
         return;
+    }
 
     char ch;
     char line[128];

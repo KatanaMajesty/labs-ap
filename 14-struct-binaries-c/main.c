@@ -33,7 +33,7 @@ int main(void)
         },
         {
             {CARGO, 220, 39.99},
-            {{0, 1, 0, 0, 1, 1, 1}, 143985748}
+            get_flight_dir((enum DaysEnum[]){MONDAY, TUESDAY}, 2, 19930945)
         },
         {
             {MILITARY, 160, 590.99},
