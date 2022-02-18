@@ -83,8 +83,8 @@ void write_max_word_file(FILE* restrict writebuffer, FILE* restrict readbuffer, 
             
         // split word
         _wpointer = strtok(_rline, delim); // get first word
-        size_t _actsize_tmp = strlen(_wpointer);
-        wlen = _wpointer[_actsize_tmp - 1] == '\n' ? _actsize_tmp - 1 : _actsize_tmp; // check if this is the only word in line and \n is next
+        // size_t _actsize_tmp = strlen(_wpointer);
+        wlen = strlen(_wpointer); // check if this is the only word in line and \n is next
         strcpy(target_word, _wpointer);
 
         // get all words and check them

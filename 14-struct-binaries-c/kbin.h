@@ -51,7 +51,6 @@ struct flight_data
     struct flight_dir  dir;
 };
 
-struct flight_data* gen_data    (unsigned int i);
 // write data with writebuffer to filename with a pointer at first element of array data, which size is len
 void write_data                 (FILE* writebuffer, const char* filename,   struct flight_data* data, size_t len);
 // write data with writebuffer to filename with a pointer at the element you want to see at index i in binary file

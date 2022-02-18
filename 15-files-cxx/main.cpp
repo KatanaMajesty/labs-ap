@@ -4,6 +4,12 @@
 #include <vector>
 #include <fstream>
 
+/*
+Панасенко Александр Андреевич +380-99-256-46-41
+Терентьев Михаил Павлович 22-505
+Сергеев Сергей Сергеевич +380-99-999-49-99
+*/
+
 struct Record
 {
     // SURNAME NAME MIDNAME NUMBER
@@ -13,13 +19,18 @@ struct Record
     Record(char* line)
     {
         const char* delim = " ,.:;?!";
-        char* word;
-        for (int i = 0; i < 4; i++)
+        char* word = strtok(line, delim);
+        if (word == NULL)
+                throw std::runtime_error("unexcepted format (no 4 words in a line detected");
+
+        _arr[0] = word;
+        for (int i = 1; i < 4; i++)
         {
-            word = strtok(i == 0 ? line : NULL, delim);
+            // word = strtok(i == 0 ? line : NULL, delim);
+            word = strtok(NULL, delim);
 
             if (word == NULL)
-                throw std::runtime_error("unexcepted format");
+                throw std::runtime_error("unexcepted format (no 4 words in a line detected");
 
             _arr[i] = word;
         }
@@ -36,7 +47,7 @@ struct Record
     }
 };
 
-const char* filename = "../data/15/data.txt";
+const char* filename = "../data/15/data";
 
 void write_file(const char* filename)
 {
@@ -51,6 +62,7 @@ void write_file(const char* filename)
         if (buffer == "")
             break;
 
+        // fout.write(buffer.c_str(), 128);
         fout << buffer << std::endl;
     }
     fout.close();
@@ -79,7 +91,7 @@ int main(void)
 {
     std::cout << "Keep entering file info or leave a blank line to stop entering and continue." << std::endl;
     write_file(filename);
-    std::vector<Record> vec = read_file(filename);
+    // std::vector<Record> vec = read_file(filename);
     
     std::cout << "Enter the name of person:" << std::endl;
     std::string request;
@@ -88,6 +100,9 @@ int main(void)
     for (int i = 0; i < vec.size(); i++)
     {
         if (vec[i].get_initials() == request)
+        {
             std::cout << "Number of " << request << ": " << vec[i].get_number() << std::endl;
+            break;
+        }
     }
 }

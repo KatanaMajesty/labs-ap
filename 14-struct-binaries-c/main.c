@@ -108,14 +108,13 @@ const char* get_plane_type(enum PlaneType plane_type)
 struct flight_dir get_flight_dir(enum DaysEnum days[], size_t arr_len, unsigned long flight_id)
 {
     struct flight_dir output = { // <- initialize empty-value struct
-        {0, 0, 0, 0, 0, 0, 0}, 0
+        {0, 0, 0, 0, 0, 0, 0}, flight_id
     };
     unsigned char _days[7];
     for (int i = 0; i < arr_len; i++) // <- change desired days to 1
     {
         output.flight_days[days[i]] = 1;
     }
-    output.flight_id = flight_id;
     // return (struct flight_dir){.flight_days = days, .flight_id = flight_id};
     return output;
 }

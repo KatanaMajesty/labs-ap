@@ -40,9 +40,7 @@ std::string encode(const char* base, const char* input, char delim)
 
     for (size_t i = 0; i < word_count; i++)
     {
-        std::string target = i % 3 == 2 ? // hardcode pog
-                input_words.at(input_cursor++) : 
-                base_words.at(base_cursor++);
+        std::string target = i % 3 == 2 ? input_words.at(input_cursor++) : base_words.at(base_cursor++);
     
         result_string.append(target);
         if (i != word_count - 1)
@@ -88,7 +86,6 @@ int main(void)
     std::cout << "[LOG] Saved Input: " << input << std::endl;
 
 
-    int act_size = input.size() + base.size() + 1; // <- needed to decode a string
     std::string encoded = encode(base.c_str(), input.c_str(), delim);
     std::cout << "[LOG] Encoded result: " << encoded << std::endl;
     std::cout << "[LOG] Decoded result: " << decode(encoded, delim) << std::endl;
