@@ -10,43 +10,6 @@
 Сергеев Сергей Сергеевич +380-99-999-49-99
 */
 
-struct Record
-{
-    // SURNAME NAME MIDNAME NUMBER
-    std::string _arr[4];
-
-    Record() = default;
-    Record(char* line)
-    {
-        const char* delim = " ,.:;?!";
-        char* word = strtok(line, delim);
-        if (word == NULL)
-                throw std::runtime_error("unexcepted format (no 4 words in a line detected");
-
-        _arr[0] = word;
-        for (int i = 1; i < 4; i++)
-        {
-            // word = strtok(i == 0 ? line : NULL, delim);
-            word = strtok(NULL, delim);
-
-            if (word == NULL)
-                throw std::runtime_error("unexcepted format (no 4 words in a line detected");
-
-            _arr[i] = word;
-        }
-    }
-
-    std::string get_initials()
-    {
-        return _arr[0] + " " + _arr[1] + " " + _arr[2];
-    }
-
-    std::string get_number()
-    {
-        return _arr[3];
-    }
-};
-
 const char* filename = "../data/15/data";
 
 void write_file(const char* filename)
@@ -68,41 +31,46 @@ void write_file(const char* filename)
     fout.close();
 }
 
-std::vector<Record> read_file(const char* filename)
+std::string find_number(const char* filename, const std::string& request)
 {
-    std::vector<Record> records{};
     std::ifstream fin(filename, std::ios_base::in);
-
     if (!fin.is_open())
         throw std::runtime_error("couldn't read a file");
 
-    size_t pos = 0;
-    while (fin.peek() != EOF)
+    std::string word;
+    std::string initials;
+    for (int i = 0; true; i++)
     {
-        char line[128];
-        fin.getline(line, 128);
-        records.push_back(Record(line)); // rvalue ref
+        fin >> word;
+        if (fin.peek() == EOF)
+            break;
+
+        if (i % 4 == 3) // number
+        {
+            if (request == initials)
+                return word;
+            else initials = "";
+        }
+        // initials
+        else initials.append(word + " "); 
+        if (fin.peek() == '\n')
+            initials = "";
     }
-    fin.close();
-    return records;
+    return "unknown";
 }
 
 int main(void)
 {
     std::cout << "Keep entering file info or leave a blank line to stop entering and continue." << std::endl;
     write_file(filename);
-    // std::vector<Record> vec = read_file(filename);
     
     std::cout << "Enter the name of person:" << std::endl;
     std::string request;
     std::getline(std::cin, request);
+    request.append(" "); // <- to avoid bugs
 
-    for (int i = 0; i < vec.size(); i++)
-    {
-        if (vec[i].get_initials() == request)
-        {
-            std::cout << "Number of " << request << ": " << vec[i].get_number() << std::endl;
-            break;
-        }
-    }
+    std::string result = find_number(filename, request);
+    if (result == "unknown")
+        std::cout << "Failed to find a number of requested student" << std::endl;
+    else std::cout << "Number of student " << request << ": " << result << std::endl;
 }
